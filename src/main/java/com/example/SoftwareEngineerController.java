@@ -1,24 +1,41 @@
 package com.example;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/vi/software")
 public class SoftwareEngineerController {
+    private final SoftwareEngineerService softwareEngineerService;
+
+    public SoftwareEngineerController(SoftwareEngineerService softwareEngineerService) {
+        this.softwareEngineerService = softwareEngineerService;
+    }
+
     @GetMapping
     public List<SoftwareEngineer> getEngineer () {
-        return List.of(
-                new SoftwareEngineer(
-                        1, "Anhnq", "js, node, java"
-                ),
-                new SoftwareEngineer(
-                        2, "Anhnq2", "js, node, java"
-                )
-        );
+        return softwareEngineerService.getSoftwareEngineer();
+    }
+
+    @GetMapping("{id}")
+    public SoftwareEngineer getEngineerById (@PathVariable Integer id) {
+        return softwareEngineerService.getSoftwareEngineerById(id);
+    }
+
+    @PostMapping
+    public void createSoftwareEngineer(@RequestBody SoftwareEngineer softwareEngineer) {
+        softwareEngineerService.addSoftwareEngineer(softwareEngineer);
+    }
+
+    @DeleteMapping("{id}")
+    public SoftwareEngineer deleteEngineerById (@PathVariable Integer id) {
+        return softwareEngineerService.deleteSoftwareEngineerById(id);
+    }
+
+    @PutMapping("{id}")
+    public SoftwareEngineer putEngineerById (@RequestBody SoftwareEngineer softwareEngineer, @PathVariable Integer id) {
+        return softwareEngineerService.putEngineerById(softwareEngineer, id);
     }
 
 }
